@@ -1,0 +1,74 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+struct node {
+    int DATA;
+    node *NEXT;
+};
+
+struct node *START = NULL;
+struct node *create_ll (struct node *);
+struct node *insert_at_beg (struct node *);
+struct node *insert_at_end (struct node *);
+struct node *insert_at_any (struct node *);
+struct node *delete_at_beg (struct node *);
+struct node *delete_at_end (struct node *);
+struct node *delete_at_any (struct node *);
+struct node *display_list (struct node *);
+
+int main ()
+{
+    int num, option;
+    printf ("\n**********MAIN MENU***********");
+    printf ("\n1. Create list: ");
+    printf ("\n2. Insert at beginning: ");
+    printf ("\n3. Insert at end: ");
+    printf ("\n4. Insert at any: ");
+    printf ("\n5. Delete at beginning: ");
+    printf ("\n6. Delete at end: ");
+    printf ("\n7. Delete at any: ");
+    printf ("\n8. Display the list: ");
+    printf ("\nEnter -1 to exit.");
+    printf ("\nEnter your option: ");
+    scanf ("%d", &option);
+    while (option != -1)
+    {
+        switch (option)
+        {
+            case 1:
+                create_ll (START);
+                break;
+            case 2:
+                insert_at_beg (START);
+                break;
+            case 3:
+                insert_at_end (START);
+                break;
+            case 4:
+                insert_at_any (START);
+                break;
+            case 5: 
+                delete_at_beg (START);
+                break;
+            case 6:
+                delete_at_end (START);
+                break;
+            case 7:
+                delete_at_any (START);
+                break;
+            default:
+                printf ("\nWrong input! Please try again!");
+                break;
+        }
+        printf ("\nEnter your option again: ");
+        scanf ("%d", &option);
+    }
+    return 0;
+}
+
+struct node *create_ll (START)
+{
+    
+    return START;    
+}
+
