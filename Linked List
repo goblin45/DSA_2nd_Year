@@ -1,21 +1,3 @@
-Skip to content
-goblin45
-/
-Magic
-Private
-Code
-Issues
-Pull requests
-Actions
-Projects
-Security
-Insights
-Settings
-Magic/Linked List
-@goblin45
-goblin45 Update Linked List
- 1 contributor
-103 lines (98 sloc)  2.54 KB
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -32,7 +14,7 @@ struct node *insert_at_any (struct node *);
 struct node *delete_at_beg (struct node *);
 struct node *delete_at_end (struct node *);
 struct node *delete_at_any (struct node *);
-struct node *display_list (struct node *);
+void display_list (struct node *);
 
 int main ()
 {
@@ -73,6 +55,9 @@ int main ()
                 break;
             case 7:
                 delete_at_any (START);
+                break;
+            case 8:
+                display_list (START);
                 break;
             default:
                 printf ("\nWrong input! Please try again!");
@@ -148,19 +133,57 @@ struct node *insert_at_end (START)
 
 struct node *insert_at_any (START)
 {
-    int option;
+    int num, neighbour, option;
     printf ("\n1. Insert before: ");
     scanf ("%d", &option);
     switch (option)
     {
         case 1:
-            
+            printf ("\n1. Enter neighbour and new data: ");
+            scanf ("%d %d", &neighbour, &num);
+            insert_before (neighbour, num);
             break;
         case 2:
-            
+             printf ("\n1. Enter neighbour and new data: ");
+            scanf ("%d %d", &neighbour, &num);
+            insert_after (neighbour, num);
             break;
         default:
             printf ("\nWrong input! Please try again!");
             break;
     }
+}
+
+struct node *delete_at_beg (START)
+{
+    struct node *ptr;
+    ptr = START;
+    START = ptr -> NEXT;
+    free (ptr);
+}
+
+struct node *delete_at_end (START)
+{
+    struct node *ptr, *preptr;
+    ptr = START;
+    preptr = ptr;
+    while (ptr -> NEXT != NULL)
+    {
+        ptr = ptr -> NEXT;
+        preptr = preptr -> NEXT;
+    }
+    preptr -> NEXT = NULL;
+    free (ptr);
+}
+
+void display (START)
+{
+    struct node *ptr;
+    ptr = START;
+    while (ptr -> NEXT!= NULL)
+    {
+        printf ("%d\t", ptr -> DATA);
+        ptr = ptr -> NEXT;
+    }
+    printf ("%d", ptr -> DATA);
 }
