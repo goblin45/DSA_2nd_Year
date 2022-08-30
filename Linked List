@@ -68,7 +68,36 @@ int main ()
 
 struct node *create_ll (START)
 {
-    
+    struct node *new_node, *ptr;
+    while (1)
+    {
+    if (START == NULL)
+    {
+        new_node = (struct node *) malloc (sizeof (struct node));
+        printf ("\nEnter first data: ");
+        scanf ("%d", &new_node -> DATA);
+        new_node -> NEXT = NULL;
+        START = new_node;
+    }
+    else 
+    {
+        ptr = START;
+        while (ptr -> NEXT !=NULL)
+        {
+            ptr = ptr -> NEXT;
+        }
+        new_node = (struct node *) malloc (sizeof (struct node));
+        printf ("\nEnter next data: ");
+        scanf ("%d", &new_node -> DATA);
+        if (new_node -> DATA == -1)
+            break;
+        else
+        {
+        new_node -> NEXT = NULL;
+        ptr -> NEXT = new_node;
+        }
+    }
+    }
     return START;    
 }
 
