@@ -1,3 +1,21 @@
+Skip to content
+goblin45
+/
+Magic
+Private
+Code
+Issues
+Pull requests
+Actions
+Projects
+Security
+Insights
+Settings
+Magic/Linked List
+@goblin45
+goblin45 Update Linked List
+ 1 contributor
+103 lines (98 sloc)  2.54 KB
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -101,3 +119,48 @@ struct node *create_ll (START)
     return START;    
 }
 
+struct node *insert_at_beg (START)
+{
+    struct node *new_node;
+    new_node = (struct node *) malloc (sizeof (struct node));
+    printf ("\nEnter data: ");
+    scanf ("%d", &new_node -> DATA);
+    new_node -> NEXT = START;
+    START = new_node;
+    return START;
+}
+
+struct node *insert_at_end (START)
+{
+    struct node *new_node, *ptr;
+    ptr = START;
+    while (ptr -> NEXT != NULL)
+    {
+        ptr = ptr -> NEXT;
+    }
+    new_node = (struct node *) malloc (sizeof (struct node));
+    printf ("\nEnter data: ");
+    scanf ("%d", &new_node -> DATA);
+    new_node -> NEXT = NULL;
+    ptr -> NEXT = new_node;
+    return START;
+}
+
+struct node *insert_at_any (START)
+{
+    int option;
+    printf ("\n1. Insert before: ");
+    scanf ("%d", &option);
+    switch (option)
+    {
+        case 1:
+            
+            break;
+        case 2:
+            
+            break;
+        default:
+            printf ("\nWrong input! Please try again!");
+            break;
+    }
+}
