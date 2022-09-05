@@ -4,26 +4,24 @@
 typedef struct node {
     int DATA;
     struct node *NEXT;
-}node1;
+} NODE;
 
-struct node *START = NULL;
-//struct node *create_ll (struct node *START);
-node1 *create_ll (node1 *START);
-struct node *insert_at_beg (struct node *START);
-struct node *insert_at_end (struct node *START);
-struct node *insert_at_any (struct node *START);
-struct node *insert_before (struct node *START, int num);
-struct node *insert_after (struct node *START, int num);
-struct node *delete_at_beg (struct node *START);
-struct node *delete_at_end (struct node *START);
-struct node *delete_at_any (struct node *START);
-struct node *delete_before (struct node *START, int num);
-struct node *delete_after (struct node *START, int num);
-void display_list (struct node *START);
-int count_node (struct node *START);
-void polynomial (struct node *START);
-void odd_even_print (struct node *START);
+NODE *START = NULL;
+NODE *create (NODE *);
+NODE *insert_at_beg (NODE *);
+NODE *insert_at_end (NODE *);
+NODE *insert_at_any (NODE *);
+NODE *insert_before (NODE *, int, int);
+NODE *insert_after (NODE *, int, int);
+NODE *delete_at_beg (NODE *);
+NODE *delete_at_end (NODE *);
+NODE *delete_at_any (NODE *);
+void polynomial (NODE *);
+int count_node (NODE *);
+void odd_even_print (NODE *);
 int count = 0, *s;
+
+void display (NODE *);
 
 int main ()
 {
@@ -37,6 +35,9 @@ int main ()
     printf ("\n6. Delete at end: ");
     printf ("\n7. Delete at any: ");
     printf ("\n8. Display the list: ");
+    printf ("\n9. Print Polynomial: ");
+    printf ("\n10. Count No. of nodes: ");
+    printf ("\n11. Print Odd and Even nodes' lists: ");
     printf ("\nEnter -1 to exit.");
     printf ("\nEnter your option: ");
     scanf ("%d", &option);
@@ -45,31 +46,37 @@ int main ()
         switch (option)
         {
             case 1:
-                create_ll (START);
+                START = create (START);
                 break;
             case 2:
-                insert_at_beg (START);
+                START = insert_at_beg (START);
                 break;
             case 3:
-                insert_at_end (START);
+                START = insert_at_end (START);
                 break;
             case 4:
-                insert_at_any (START);
+                START = insert_at_any (START);
                 break;
             case 5: 
-                delete_at_beg (START);
+                START = delete_at_beg (START);
                 break;
             case 6:
-                delete_at_end (START);
+                START = delete_at_end (START);
                 break;
             case 7:
-                delete_at_any (START);
+                START = delete_at_any (START);
                 break;
             case 8:
-                display_list (START);
+                display (START);
                 break;
             case 9:
                 polynomial (START);
+                break;
+            case 10:
+                printf ("No. of nodes is: %d", count_node (START));
+                break;
+            case 11:    
+                odd_even_print (START);
                 break;
             default:
                 printf ("\nWrong input! Please try again!");
@@ -81,45 +88,50 @@ int main ()
     return 0;
 }
 
-node1 *create_ll (START)
+NODE *create (NODE *START)
 {
-    struct node *new_node, *ptr;
+    NODE *new_node, *ptr;
     while (1)
     {
-    if (START == NULL)
-    {
-        new_node = (struct node *) malloc (sizeof (struct node));
-        printf ("\nEnter first data: ");
-        scanf ("%d", &new_node -> DATA);
-        new_node -> NEXT = NULL;
-        START = new_node;
-    }
-    else 
-    {
-        ptr = START;
-        while (ptr -> NEXT !=NULL)
+        if (START == NULL)
         {
-            ptr = ptr -> NEXT;
+            new_node = (NODE *) malloc (sizeof (NODE));
+            printf ("\nEnter first data: ");
+            scanf ("%d", &new_node -> DATA);
+            new_node -> NEXT = NULL;
+            START = new_node;
         }
-        new_node = (struct node *) malloc (sizeof (struct node));
-        printf ("\nEnter next data: ");
-        scanf ("%d", &new_node -> DATA);
-        if (new_node -> DATA == -1)
-            break;
-        else
+        else 
         {
-        new_node -> NEXT = NULL;
-        ptr -> NEXT = new_node;
+            ptr = START;
+            while (ptr -> NEXT !=NULL)
+            {
+                ptr = ptr -> NEXT;
+            }
+            new_node = (NODE *) malloc (sizeof (NODE));
+            printf ("\nEnter next data: ");
+            scanf ("%d", &new_node -> DATA);
+            if (new_node -> DATA == -1)
+            {
+                break;
+                free (new_node); 
+            }
+            else
+            {
+                new_node -> NEXT = NULL;
+                ptr -> NEXT = new_node;
+            }
         }
-    }
     }
     return START;    
 }
 
-struct node *insert_at_beg (START)
+//problem 1
+
+NODE *insert_at_beg (NODE *START)
 {
-    struct node *new_node;
-    new_node = (struct node *) malloc (sizeof (struct node));
+    NODE *new_node;
+    new_node = (NODE *) malloc (sizeof (NODE));
     printf ("\nEnter data: ");
     scanf ("%d", &new_node -> DATA);
     new_node -> NEXT = START;
@@ -127,15 +139,15 @@ struct node *insert_at_beg (START)
     return START;
 }
 
-struct node *insert_at_end (START)
+NODE *insert_at_end (NODE *START)
 {
-    struct node *new_node, *ptr;
+    NODE *new_node, *ptr;
     ptr = START;
     while (ptr -> NEXT != NULL)
     {
         ptr = ptr -> NEXT;
     }
-    new_node = (struct node *) malloc (sizeof (struct node));
+    new_node = (NODE *) malloc (sizeof (NODE));
     printf ("\nEnter data: ");
     scanf ("%d", &new_node -> DATA);
     new_node -> NEXT = NULL;
@@ -143,120 +155,79 @@ struct node *insert_at_end (START)
     return START;
 }
 
-struct node *insert_at_any (START)
+NODE *insert_at_any (NODE *START)
 {
-    int neighbour, option;
+    int neighbour, num, option;
+    printf ("\nEnter new data: ");
+    scanf ("%d", &num);
     printf ("\n1. Insert before: ");
+    printf ("\n2. Insert after: ");
+    printf ("\nEnter your option: ");
     scanf ("%d", &option);
     switch (option)
     {
         case 1:
             printf ("\nEnter neighbour: ");
             scanf ("%d", &neighbour);
-            insert_before (START, neighbour);
+            START = insert_before (START, neighbour, num);
             break;
         case 2:
             printf ("\nEnter neighbour: ");
             scanf ("%d", &neighbour);
-            insert_after (START, neighbour);
+            START = insert_after (START, neighbour, num);
             break;
         default:
             printf ("\nWrong input! Please try again!");
             break;
     }
+    return START;
 }
 
-struct node *insert_before (START)
+NODE *insert_before (NODE *START, int neighbour, int num)
 {
-    
-}
-
-struct node *delete_at_beg (START)
-{
-    struct node *ptr;
-    ptr = START;
-    START = START -> NEXT;
-    free (ptr);
-}
-
-struct node *delete_at_end (START)
-{
-    struct node *ptr, *preptr;
-    ptr = START;
-    preptr = ptr;
-    while (ptr -> NEXT != NULL)
+    NODE *new_node, *ptr, *preptr;
+    new_node = (NODE *) malloc (sizeof (NODE));
+    new_node -> DATA = num;
+    preptr = START;
+    ptr = preptr -> NEXT;
+    if (START -> DATA == neighbour)
     {
-        ptr = ptr -> NEXT;
+        new_node -> NEXT = START;
+        START = new_node;
+    }
+    else
+    {
+        while (ptr -> DATA != neighbour)
+        {
+            ptr = ptr -> NEXT;
+            preptr = preptr -> NEXT;
+        }
+        new_node -> NEXT = ptr;
+        preptr -> NEXT = new_node;
+    }
+    return START;
+}
+
+NODE *insert_after (NODE *START, int neighbour, int num)
+{
+    NODE *new_node, *ptr, *preptr;
+    new_node = (NODE *) malloc (sizeof (NODE));
+    new_node -> DATA = num;
+    preptr = START;
+    ptr = preptr -> NEXT;
+    while (preptr -> DATA != neighbour)
+    {
         preptr = preptr -> NEXT;
+        ptr = ptr -> NEXT;
     }
-    preptr -> NEXT = NULL;
-    free (ptr);
+    new_node -> NEXT = ptr;
+    preptr -> NEXT = new_node;
+    return START;
 }
 
-struct node *delete_at_any (START)
+void display (NODE *START)
 {
-    struct node *ptr, *preptr;
-    int neighbour, option;
-    printf ("\nEnter 1 to delete before: ");
-    printf ("\nEnter 2 to delete after: ");
-    printf ("\nEnter your option: ");
-    scanf ("%d", &option);
-    switch (option)
-    {
-        case 1: 
-            printf ("\nEnter neighbour: ");
-            scanf ("%d", &neighbour);
-            delete_before (START, neighbour);
-            break;
-        case 2:
-            printf ("\nEnter neighbour: ");
-            scanf ("%d", &neighbour);
-            delete_after (START, neighbour);
-            break;
-        default:
-            printf ("\nWrong input! Please try again!");
-            break;
-    }
-}
-
-struct node *delete_before (START, int num)
-{
-    struct node *ptr, *preptr;
-    ptr = START;
-    while (preptr -> DATA != num)
-    {
-        if (ptr -> NEXT == NULL)
-        {
-            printf ("\nItem not found!");
-        }
-        else 
-        {
-            ;
-        }
-    }
-}
-
-struct node *delete_after (START, int num)
-{
-    struct node *ptr, *preptr;
-    ptr = START;
-    while (ptr -> DATA != num)
-    {
-        preptr = ptr;
-        ptr = ptr -> NEXT; 
-    }
-    if (preptr -> NEXT == NULL)
-        printf ("\nItem not found!");
-    else 
-    {
-        preptr -> NEXT = ptr -> NEXT;
-        free (ptr);
-    }
-}
-
-void display (START)
-{
-    struct node *ptr;
+    NODE *ptr;
     ptr = START;
     if (ptr == NULL)
         printf ("\nThe list is empty!");
@@ -269,13 +240,115 @@ void display (START)
         }
         printf ("%d", ptr -> DATA);
     }
+} 
+
+//problem 2
+
+NODE *delete_at_beg (NODE *START)
+{
+    NODE *ptr;
+    ptr = START;
+    if (START == NULL)
+        printf ("\nList is empty! ");
+    else 
+    {
+        START = START -> NEXT;
+        free (ptr);
+    }
+    return START;
 }
 
-int count_node (START)
+NODE *delete_at_end (NODE *START)
 {
-    struct node *ptr;
+    NODE *ptr, *preptr;
+    if (START == NULL)
+        printf ("\nList is empty! ");
+    else 
+    {  
+        preptr = START;
+        ptr = preptr -> NEXT;
+        while (ptr -> NEXT != NULL)
+        {
+            ptr = ptr -> NEXT;
+            preptr = preptr -> NEXT;
+        }
+        preptr -> NEXT = NULL;
+        free (ptr);
+    }
+    return START;
+}
+
+NODE *delete_at_any (NODE* START)
+{
+    int num; NODE *ptr, *preptr;
+    printf ("\nEnter the value: ");
+    scanf ("%d", &num);
+    preptr = START;
+    ptr = preptr -> NEXT;
+    if (START -> DATA == num)
+    {
+        free (START);
+        START = ptr;
+    }
+    else
+    {
+        while (ptr -> DATA != num)
+        {
+            if (ptr == NULL || ptr -> NEXT == NULL || START == NULL)
+            {
+                printf ("\nItem not found!");
+                break;
+            }
+            else
+            {
+                ptr = ptr -> NEXT;
+                preptr = preptr -> NEXT;
+            }
+        }
+        if (ptr -> DATA == num && ptr -> NEXT == NULL)
+        {
+            preptr -> NEXT = NULL;
+            free (ptr);
+        }
+        else 
+        {
+            preptr -> NEXT = ptr -> NEXT;
+            free (ptr);
+        }
+    }
+    return START;
+}
+
+//problem 4
+
+void polynomial (NODE *START)
+{
+    int i = 0;
+    NODE *ptr;
+    s = (int *) malloc (count * sizeof (int));
     ptr = START;
-    while (ptr -> NEXT != NULL)
+    while (ptr != NULL)
+    {
+        *(s + i) = ptr -> DATA;
+        ptr = ptr -> NEXT;
+        i++;
+    }
+    for (i = count - 1; i > 0; i--)
+    {
+        printf ("%d x^%d   +   ", *(s + i), i);
+    }
+    printf ("%d", *s);
+}
+
+//problem 5
+
+int count_node (NODE *START)
+{
+    NODE *ptr;
+    ptr = START;
+    if (START == NULL)
+        return 0;
+    while (ptr != NULL)
     {
         ptr = ptr -> NEXT;
         ++count;
@@ -283,55 +356,92 @@ int count_node (START)
     return count;
 }
 
-void polynomial (struct node *)
+//problem 6
+
+void odd_even_print (NODE *START)
 {
-    int i = 0;
-    struct node *ptr;
-    s = (int *) malloc (count * sizeof ( int));
+    NODE *ptr; int i = 1;
     ptr = START;
-    while (ptr -> NEXT != NULL)
+    printf ("\nThe odd list is: \n");
+    while (ptr != NULL)
     {
-        *(s + i) = ptr -> DATA;
-        ptr = ptr - > NEXT;
+        if (i % 2 !=  0)
+            printf ("%d\t", ptr -> DATA);
+        ptr = ptr -> NEXT;
+        i++;
     }
-    for (i = 0; i < count - 1; i++)
+    ptr = START; i = 1;
+    printf ("\nThe even list is: \n");
+    while (ptr != NULL)
     {
-        printf ("%dx^%d   +   ", *(s + i), i);
+        if (i % 2 == 0)
+            printf ("%d\t", ptr -> DATA);
+        ptr = ptr -> NEXT;
+        i++;
     }
-    printf ("%d", *(s + count - 1));
 }
 
-void odd_even_print (START)
-{
-    int *even = NULL, *odd = NULL, even_count = 0, odd_count = 0, i;
-    even = (int *) malloc (sizeof (int));
-    odd = (int *) malloc (sizeof (int));
-    struct node *ptr;
-    ptr = START;
-    while (ptr -> NEXT != NULL)
-    {
-        if (ptr -> DATA % 2 == 0)
-        {
-            ++even_count; 
-            even = (int * ) realloc (even, even_count * sizeof (int));
-            even [even_count] = ptr -> DATA;
-        }
-        else 
-        {
-            ++odd_count;
-            odd = (int *) realloc (odd, odd_count * sizeof (int));
-            odd [odd_count] = ptr -> DATA;
-        }
-        ptr = ptr -> NEXT;
-    }
-    for (i = 0; i < count; i++)
-    {
-        printf ("\nThe odd list is: \n");
-        printf ("%d\t", *(odd + i));
-    }
-    for (i = 0; i < count; i++)
-    {
-        printf ("\nThe even list is: ");
-        printf ("%d\t", *(even + i));
-    }
-}
+// OUTPUT
+// **********MAIN MENU***********
+// 1. Create list: 
+// 2. Insert at beginning: 
+// 3. Insert at end: 
+// 4. Insert at any: 
+// 5. Delete at beginning: 
+// 6. Delete at end: 
+// 7. Delete at any: 
+// 8. Display the list: 
+// 9. Print Polynomial: 
+// 10. Count No. of nodes: 
+// 11. Print Odd and Even nodes' lists: 
+// Enter -1 to exit.
+// Enter your option: 1
+// Enter first data: 1
+// Enter next data: 2
+// Enter next data: 3
+// Enter next data: 4
+// Enter next data: 5
+// Enter next data: -1
+// Enter your option again: 8
+// 1	2	3	4	5
+// Enter your option again: 2
+// Enter data: 0
+// Enter your option again: 3
+// Enter data: 6
+// Enter your option again: 8
+// 0	1	2	3	4	5	6
+// Enter your option again: 4
+// Enter new data: 7
+// 1. Insert before: 
+// 2. Insert after: 
+// Enter your option: 1
+// Enter neighbour: 4
+// Enter your option again: 4
+// Enter new data: 8
+// 1. Insert before: 
+// 2. Insert after: 
+// Enter your option: 2
+// Enter neighbour: 5
+// Enter your option again: 8
+// 0	1	2	3	7	4	5	8	6
+// Enter your option again: 5
+// Enter your option again: 8
+// 1	2	3	7	4	5	8	6
+// Enter your option again: 6
+// Enter your option again: 8
+// 1	2	3	7	4	5	8
+// Enter your option again: 7
+// Enter the value: 7
+// Enter your option again: 8
+// 1	2	3	4	5	8
+// Enter your option again: 10
+// No. of nodes is: 6
+// Enter your option again: 9
+// 8 x^5   +   5 x^4   +   4 x^3   +   3 x^2   +   2 x^1   +   1
+// Enter your option again: 11
+// The odd list is: 
+// 1	3	5	
+// The even list is: 
+// 2	4	8	
+// Enter your option again: -1
+//
