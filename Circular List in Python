@@ -1,0 +1,122 @@
+class Node:
+    def __init__ (self, data):
+        self.data = data
+        self.next = None
+
+class Linkedlist:
+    def __init__ (self):
+        self.head = None
+    def create (self):
+        n = int (input ("Enter first data: "))
+        new_node = Node (n)
+        while (n != -1):
+            if self.head is None:
+                self.head = new_node
+            else:
+                ptr = self.head
+                while ptr.next is self.head: 
+                    ptr = ptr.next
+                ptr.next = new_node
+                new_node.next = self.head
+            n = int (input ("Enter next data: "))
+    def display (self):
+        ptr = self.head
+        while ptr.next is not self.head:
+            print (ptr.data, end = " ")
+            ptr = ptr.next
+        print (ptr.data)
+    def insert_at_beg (self, val):
+        new_node = Node (val)
+        ptr = self.head
+        while (ptr.next != self.head):
+            ptr = ptr.next
+        new_node.next = self.head 
+        ptr.next = new_node
+        self.head = new_node
+    def insert_at_end (self, val):
+        new_node = Node (val)
+        ptr = self.head 
+        while (ptr.next != self.head):
+            ptr = ptr.next
+        ptr.next = new_node
+        new_node.next = self.head
+    def insert_at_any (self, val):
+        new_node = Node (val)
+        n = int (input ("Enter the position: "))
+        i = 0
+        flag = 1
+        if (n == 1):
+            ptr = self.head
+            while ptr.next is not self.head:
+                ptr = ptr.next
+            ptr.next = new_node
+            new_node.next = self.head
+        else:
+            preptr = self.head
+            while (i != n):
+                i = i + 1 
+                ptr = preptr.next
+                if (ptr == self.head):
+                    flag = 0
+                    break
+                preptr = preptr.next
+        if (flag == 1):
+            preptr.next = new_node
+            new_node.next = ptr
+        else:
+            print ("The list is not so long!")
+    def search (self, val):
+        ptr = self.head
+        flag = 1
+        count = 0
+        while (ptr.data != val):
+            ptr = ptr.next
+            if (ptr == self.head):
+                flag = 0
+                break
+            count = count + 1
+        if (flag == 1):
+            print ("The data is at position: ", count)
+        else:
+            print ("Data not found!")
+    def count_node (self):
+        ptr = self.head
+        count = 0
+        while (ptr.next != self.head):
+            count = count + 1
+            ptr = ptr.next
+        print ("The list has ", count, " nodes!")
+    def delete_at_beg (self):
+        ptr = self.head
+        while (ptr.next != self.head):
+            ptr = ptr.next
+        ptr.next = self.head.next
+        self.head = self.head.next
+    def delete_at_end (self):
+        ptr = self.head
+        while (ptr.next.next != self.head):
+            ptr = ptr.next
+        ptr.next = self.head
+    def delete_at_any (self):
+        n = int (input ("Enter the position: "))        
+        i = 0
+        flag = 1
+        if (n == 1):
+            ptr = self.head
+            while ptr.next is not self.head:
+                ptr = ptr.next
+            ptr.next = self.head.next
+            self.head = self.head.next
+        else:
+            preptr = self.head
+            while (i != n):
+                ptr = preptr.next
+                i = i + 1
+                if (ptr == self.head):
+                    flag = 0
+                    break
+                preptr = preptr.next
+        if (flag == 1):
+            preptr.next = ptr.next
+        else:
+            print ("The list is not so long!")
