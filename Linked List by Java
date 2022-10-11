@@ -1,0 +1,65 @@
+import java.util.*;
+
+class Node
+{
+    int data; Node next;
+    Node (int num)
+    {
+        this.data = num;
+        this.next = null; 
+    }
+}
+
+class LinkedList extends Node 
+{
+    Node head; int num;
+    Scanner sc = new Scanner (System.in);
+    DoubleLinkedList ()
+    {
+        System.out.println ("Enter first data: ");
+        num = sc.nextInt ();
+        Node start = new Node (num);
+    }
+    void display ()
+    {
+        Node ptr = start;
+        while (ptr != null)
+        {
+            System.out.println (ptr.data + "\t");
+            ptr = ptr.next;
+        }
+    }
+    void insert_at_beg ()
+    {
+        
+    }
+    void insert_at_end ()
+    {
+        
+    }
+    void insert_at_any ()
+    {
+        
+    }
+    void delete_at_beg ()
+    {
+        
+    }
+    void delete_at_end ()
+    {
+        
+    }
+    void delete_at_any ()
+    {
+        
+    }
+}
+
+class Main extends LinkedList
+{
+    public static void main (String args [])
+    {
+        LinkedList list1 = new LinkedList ();
+        list11.display ();
+    }
+}
