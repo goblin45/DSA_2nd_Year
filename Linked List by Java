@@ -3,8 +3,11 @@ import java.util.*;
 class Node
 {
     int data; Node next;
-    Node (int num)
+    Scanner sc = new Scanner (System.in);
+    Node ()
     {
+	System.out.println ("Enter data: ");
+	num = sc.nextInt ();
         this.data = num;
         this.next = null; 
     }
@@ -14,11 +17,10 @@ class LinkedList extends Node
 {
     Node head; int num;
     Scanner sc = new Scanner (System.in);
-    DoubleLinkedList ()
+    LinkedList ()
     {
         System.out.println ("Enter first data: ");
-        num = sc.nextInt ();
-        Node start = new Node (num);
+        Node start = new Node ();
     }
     void display ()
     {
@@ -31,7 +33,11 @@ class LinkedList extends Node
     }
     void insert_at_beg ()
     {
-        
+	Node ptr = start;
+        Node new_node = new Node ();
+	while (ptr.next! = null)
+	    ptr = ptr.next;
+	ptr.next = new_node;
     }
     void insert_at_end ()
     {
