@@ -15,7 +15,7 @@ class Node
 
 class LinkedList extends Node 
 {
-    Node head; int num;
+    Node start; int num;
     Scanner sc = new Scanner (System.in);
     LinkedList ()
     {
@@ -24,7 +24,7 @@ class LinkedList extends Node
     }
     void display ()
     {
-        Node ptr = start;
+        Node ptr = this.start;
         while (ptr != null)
         {
             System.out.println (ptr.data + "\t");
@@ -34,14 +34,14 @@ class LinkedList extends Node
     void insert_at_beg ()
     {
 	Node new_node = new Node ();
-	new_node.next = start;
-	
+	new_node.next = this.start;
+	this.start = new_node;
     }
     void insert_at_end ()
     {
-        Node ptr = start;
+        ptr = this.start;
         Node new_node = new Node ();
-	while (ptr.next! = null)
+	while (ptr.next != null)
 	    ptr = ptr.next;
 	ptr.next = new_node
     }
@@ -51,15 +51,56 @@ class LinkedList extends Node
     }
     void delete_at_beg ()
     {
-        
+        num = this.start.data;
+	this.start = this.start.next;
+	System.out.println ("The value deleted is: " + num);
     }
     void delete_at_end ()
     {
-        
+    	Node preptr;
+        ptr = this.start;
+	preptr = ptr;
+	while (ptr.next != null)
+	{
+	    ptr = ptr.next;
+	    preptr.next = ptr;
+	}
+	preptr.next = null;
     }
     void delete_at_any ()
     {
         
+    }
+    void search_node ()
+    {
+    	int flag = 0;
+    	System.out.println ("Enter the value: ");
+	num = sc.nextInt ();
+	ptr = this.start;
+	while (ptr.next != null)
+	{
+	    ptr = ptr.next;
+	    if (ptr.data == num)
+	    {
+	    	System.out.println ("The element is present!");
+		flag = 1; break;
+	    }
+	}
+	if (flag == 0)
+	{
+		System.out.println ("The element is not present!);
+	}
+    }
+    void count_node ()
+    {
+    	ptr = this.start;
+	num = 0;
+	while (ptr.next != null)
+	{
+	    ptr = ptr.next;
+	    num = num + 1;
+	}
+	System.out.println ("The number of nodes is: " + num);
     }
 }
 
