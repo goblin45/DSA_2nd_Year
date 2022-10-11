@@ -33,15 +33,17 @@ class LinkedList extends Node
     }
     void insert_at_beg ()
     {
-	Node ptr = start;
-        Node new_node = new Node ();
-	while (ptr.next! = null)
-	    ptr = ptr.next;
-	ptr.next = new_node;
+	Node new_node = new Node ();
+	new_node.next = start;
+	
     }
     void insert_at_end ()
     {
-        
+        Node ptr = start;
+        Node new_node = new Node ();
+	while (ptr.next! = null)
+	    ptr = ptr.next;
+	ptr.next = new_node
     }
     void insert_at_any ()
     {
@@ -66,6 +68,7 @@ class Main extends LinkedList
     public static void main (String args [])
     {
         LinkedList list1 = new LinkedList ();
-        list11.display ();
+        list1.insert_at_beg ();
+	list1.display ();
     }
 }
