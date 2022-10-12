@@ -16,7 +16,6 @@ class Node
 class LinkedList extends Node 
 {
     Node start; int num;
-    Scanner sc = new Scanner (System.in);
     LinkedList ()
     {
         System.out.println ("Enter first data: ");
@@ -47,7 +46,12 @@ class LinkedList extends Node
     }
     void insert_at_any ()
     {
-        
+        ptr = this.start;
+	Node new_node = new Node ();
+	num = sc.nextInt(
+	while ()
+	{
+	    ptr = ptr.ne
     }
     void delete_at_beg ()
     {
@@ -64,7 +68,7 @@ class LinkedList extends Node
 	{
 	    ptr = ptr.next;
 	    preptr.next = ptr;
-	}
+	} 
 	preptr.next = null;
     }
     void delete_at_any ()
