@@ -111,4 +111,4 @@ class Linkedlist:
             preptr.next = ptr.next
             ptr.next.prev = preptr
         else:
-            print ("The list is not to long!")
+            print ("The list is not too long!")
