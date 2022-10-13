@@ -1,0 +1,300 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+typedef struct node {
+    int DATA;
+    struct node *NEXT, *PREV;
+} NODE;
+
+NODE *create (NODE *);
+NODE *START = NULL;
+void display (NODE *);
+NODE *insert_at_beg (NODE *);
+NODE *insert_at_end (NODE *);
+NODE *insert_at_any (NODE *);
+void search (NODE *);
+void count_node (NODE *);
+NODE *delete_at_beg (NODE *);
+NODE *delete_at_end (NODE *);
+NODE *delete_at_any (NODE *);
+
+int main ()
+{
+    int option;
+    printf ("\n**********MAIN MENU***********");
+    printf ("\n1. Create a list: ");
+    printf ("\n2. Display a list: ");
+    printf ("\n3. Insert at beginning: ");
+    printf ("\n4. Insert at end: ");
+    printf ("\n5. Count number of nodes: ");
+    printf ("\n6. Insert at any: ");
+    printf ("\n7. Search an element: ");
+    printf ("\n8. Delete at beginning: ");
+    printf ("\n9. Delete at end: ");
+    printf ("\n10. Delete at any: ");
+    printf ("\nEnter -1 to exit.");
+    printf ("\nEnter your option again: ");
+    scanf ("%d", &option);
+    while (option != -1)
+    {
+        switch (option)
+        {
+            case 1:
+                START = create (START);
+                break;
+            case 2:
+                display (START);
+                break;
+            case 3:
+                START = insert_at_beg (START);
+                break;
+            case 4: 
+                START = insert_at_end (START);
+                break;
+            case 5: 
+                START = insert_at_any (START);
+                break;
+            case 6: 
+                count_node (START);
+                break;
+            case 7:
+                search (START);
+                break;
+            case 8:
+                START = delete_at_beg (START);
+                break;
+            case 9:
+                START = delete_at_end (START);
+                break;
+            case 10:
+                START = delete_at_any (START);
+                break;
+            default:
+                printf ("\nWrong input! Please try again!");
+                break;
+        }
+        printf ("\nEnter your option again: ");
+        scanf ("%d", &option);
+    }
+    return 0;
+}
+
+void display (NODE *START)
+{
+    NODE *ptr;
+    printf ("%d\t", START -> DATA);
+    ptr = START -> NEXT;
+    while (ptr != START)
+    {
+        printf ("%d\t", ptr -> DATA);
+        ptr = ptr -> NEXT;
+    }
+}
+
+NODE *create (NODE *START)
+{
+    NODE *new_node, *preptr;
+    new_node = (NODE *) malloc (sizeof (NODE));
+    printf ("\nEnter first data: ");
+    scanf ("%d", &new_node -> DATA);
+    while (1)
+    {
+        if (new_node -> DATA == -1)
+        {
+            free (new_node);
+            break;
+        }
+        else
+        {
+            if (START == NULL)
+            {
+                START = new_node;
+                START -> NEXT = START;
+                START -> PREV = START;
+            }
+            else if (START -> NEXT == START)
+            {
+                START -> NEXT = new_node; new_node -> NEXT = START;
+                START -> PREV = new_node; new_node -> PREV = START;
+            }
+            else
+            {
+                preptr = START -> PREV;
+                new_node -> NEXT = START; preptr -> NEXT = new_node;
+                new_node -> PREV = preptr; START -> PREV = new_node;
+            }
+        }
+        printf ("\nEnter next data: ");
+        scanf ("%d", &new_node -> DATA);
+    }
+    return START;
+} 
+
+NODE *insert_at_beg (NODE *START)
+{
+    NODE *new_node, *preptr;
+    preptr = START -> PREV;
+    new_node = (NODE *) malloc (sizeof (NODE));
+    printf ("\nEnter the data: ");
+    scanf ("%d", &new_node -> DATA);
+    new_node -> PREV = START -> PREV;
+    new_node -> NEXT = START;
+    preptr -> NEXT = new_node;
+    START -> PREV = new_node;
+    START = new_node;
+    return START;
+}
+
+NODE *insert_at_end (NODE *START)
+{
+    NODE *new_node, *preptr = START -> PREV;
+    new_node = (NODE *) malloc (sizeof (NODE));
+    printf ("\nEnter the data: ");
+    scanf ("%d", &new_node -> DATA);
+    new_node -> NEXT = START;
+    preptr -> NEXT = new_node;
+    new_node -> PREV = preptr;
+    return START;
+}
+
+NODE *insert_at_any (NODE *START)
+{
+    NODE *new_node, *preptr, *ptr; int i = 0, num, flag = 1;
+    new_node = (NODE *) malloc (sizeof (NODE));
+    printf ("\nEnter the data: ");
+    scanf ("%d", &new_node -> DATA);
+    printf ("\nEnter the position: ");
+    scanf ("%d", &num);
+    preptr = START; 
+    if (num = 1)
+    {
+        new_node -> NEXT = START -> NEXT;
+        new_node -> PREV = START -> PREV;
+        START = new_node;
+    }
+    else
+    {
+        while (i != num)
+        {
+            ptr = preptr -> NEXT;
+            i++;
+            preptr = preptr -> NEXT;
+            if (preptr == START)
+            {
+                flag = 0; break;
+            }
+        }
+        if (flag == 1)
+        {
+            ptr = ptr -> NEXT;
+            new_node -> NEXT = ptr; ptr -> PREV = new_node;
+            new_node -> PREV = preptr; preptr -> NEXT = new_node;
+        }
+        else 
+            printf ("\nList is not that long!");
+    }
+    return START;
+}
+
+void search (NODE *START)
+{
+    NODE *ptr; int val, count = 1, flag = 1;
+    ptr = START;
+    printf ("\nEnter the data: ");
+    scanf ("%d", &val);
+    while (ptr -> DATA != val)
+    {
+        count++;
+        ptr = ptr -> NEXT;
+        if (ptr == START)
+        {
+            flag = 0;
+            break;
+        }
+    }
+    if (flag == 1)
+        printf ("\nThe position of the data is: %d", count);
+    else
+        printf ("\nData not found!");
+}
+
+void count_node (NODE *START)
+{
+    NODE *ptr; int count = 0;
+    ptr = START;
+    while (ptr != NULL)
+    {
+        count++;
+        ptr = ptr -> NEXT;
+    }
+    printf ("\nThe number of nodes is: %d", count);
+}
+
+NODE *delete_at_beg (NODE *START)
+{
+    NODE *ptr = START, *preptr = START -> PREV;
+    if (START == NULL)
+        printf ("\nList underflowed!");
+    else
+    {
+        START = START -> NEXT;
+        preptr -> NEXT = START;
+        START -> PREV = preptr;
+        free (ptr);
+    }
+    return START;
+}
+
+NODE *delete_at_end (NODE *START)
+{
+    NODE *ptr, *preptr;
+    if (START == NULL)
+        printf ("\nList underflowed!");
+    else
+    {
+        ptr = START -> PREV;
+        preptr = ptr -> PREV;
+        preptr -> NEXT = START;
+        START -> PREV = preptr;
+        free (ptr);
+    }
+    return START;
+}
+
+NODE *delete_at_any (NODE *START)
+{
+    NODE *ptr, *preptr, *temp; int i = 0, num, flag = 1;
+    printf ("\nEnter the position: ");
+    scanf ("%d", &num);
+    temp = START;
+    if (num == 1)
+    {
+        preptr = START -> PREV;
+        preptr -> NEXT = START -> NEXT;
+        START = START -> NEXT;
+        free (temp);
+    }
+    else
+    {
+        while (i != num)
+        {
+            ++i;
+            preptr = temp -> PREV;
+            temp = temp -> NEXT;
+            if (temp == START)
+            {
+                flag = 0; break;
+            }
+            ptr = temp -> NEXT; 
+        }
+        if (flag == 1)
+        {
+            preptr -> NEXT = ptr;
+            ptr -> PREV = preptr;
+            free (temp);
+        }
+        else
+            printf ("\nThe list is not that long!");
+    }
+    return START;
+}
