@@ -156,6 +156,8 @@ def main ():
             list1.delete_at_end ()
         elif option == 10:
             list1.delete_at_any ()
+        else:
+            print ("Wrong input! Please try again!")
         option = int (input ("Enter your option again: "))
     
 main ()
