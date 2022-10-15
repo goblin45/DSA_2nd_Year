@@ -104,7 +104,7 @@ class DList:
             self.head.prev = None
         else:
             ptr = self.head
-            while (i != n):
+            while (i != n - 1):
                 i = i + 1
                 if ptr.next is None:
                     flag = 0
