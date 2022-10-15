@@ -14,7 +14,7 @@ NODE *insert_at_end (NODE *);
 NODE *insert_at_any (NODE *);
 void search (NODE *);
 void count_node (NODE *);
-NODE *delete_at_end (NODE *);
+NODE *delete_at_beg (NODE *);
 NODE *delete_at_end (NODE *);
 NODE *delete_at_any (NODE *);
 
@@ -24,10 +24,10 @@ int main ()
     printf ("\n**********MAIN MENU***********");
     printf ("\n1. Create a list: ");
     printf ("\n2. Display a list: ");
-    printf ("\n3. Insertat beginning: ");
+    printf ("\n3. Insert at beginning: ");
     printf ("\n4. Insert at end: ");
-    printf ("\n5. Count number of nodes: ");
-    printf ("\n6. Insert at any: ");
+    printf ("\n5. Insert at any: ");
+    printf ("\n6. Count number of nodes: ");
     printf ("\n7. Search an element: ");
     printf ("\n8. Delete at beginning: ");
     printf ("\n9. Delete at end: ");
@@ -82,11 +82,11 @@ int main ()
 NODE *create (NODE *START)
 {
     NODE *new_node, *ptr, *preptr;
-    new_node = (NODE *) malloc (sizeof (NODE));
     printf ("\nEnter first data: ");
-    scanf ("%d", &new_node -> DATA);
     while (1)
     {
+        new_node = (NODE *) malloc (sizeof (NODE));
+        scanf ("%d", &new_node -> DATA);
         if (new_node -> DATA == -1)
         {
             free (new_node);
@@ -94,13 +94,13 @@ NODE *create (NODE *START)
         }
         if (START == NULL)
         {
-            START = new_node;
             new_node -> NEXT = NULL;
             new_node -> PREV = NULL;
+            START = new_node;
         }
         else
         {
-            preptr = START;
+            ptr = START;
             while (ptr -> NEXT != NULL)
                 ptr = ptr -> NEXT;
             ptr -> NEXT = new_node;
@@ -108,7 +108,6 @@ NODE *create (NODE *START)
             new_node -> NEXT = NULL;
         }
         printf ("\nEnter next data: ");
-        scanf ("%d", &new_node -> DATA);
     }
     return START;
 }
@@ -117,10 +116,16 @@ void display (NODE *START)
 {
     NODE *ptr;
     ptr = START;
-    while (ptr != NULL)
+    if (START == NULL)
+        printf ("\nThe list is empty!");
+    else 
     {
-        printf ("%d\t", ptr -> DATA);
-        ptr = ptr -> NEXT;
+        printf ("\nThe full list is: \n");
+        while (ptr != NULL)
+        {
+            printf ("%d\t", ptr -> DATA);
+            ptr = ptr -> NEXT;
+        } 
     }
 }
 
@@ -153,26 +158,38 @@ NODE *insert_at_end (NODE *START)
 
 NODE *insert_at_any (NODE *START)
 {
-    NODE *new_node, *preptr, *ptr; int i = 0, num;
+    NODE *new_node, *preptr, *ptr; int i = 0, num, flag = 1;
+    new_node = (NODE *) malloc (sizeof (NODE));
     printf ("\nEnter the data: ");
     scanf ("%d", &new_node -> DATA);
+    new_node -> NEXT = NULL;
     printf ("\nEnter the position: ");
     scanf ("%d", &num);
-    preptr = START; 
-    while (i != num)
+    if (num == 1)
     {
-        ptr = preptr -> NEXT;
-        i++;
-        preptr = preptr -> NEXT;
-        if (preptr == NULL)
+        new_node -> NEXT = START;
+        START = new_node;
+    }
+    else
+    {
+        ptr = START;
+        while (i != num - 1)
         {
-            printf ("\nList is not that long!");
-            break;
+            ++i;
+            if (ptr == NULL)
+            {
+                printf ("\nList is not that long!");
+                flag = 0; break;
+            }
+            ptr = ptr -> NEXT;
+            preptr = ptr -> PREV;
+        }
+        if (flag == 1)
+        {
+            new_node -> NEXT = ptr; ptr -> PREV = new_node;
+            new_node -> PREV = preptr; preptr -> NEXT = new_node;
         }
     }
-    ptr = ptr -> NEXT;
-    new_node -> NEXT = ptr; ptr -> PREV = new_node;
-    new_node -> PREV = preptr; preptr -> NEXT = new_node;
     return START;
 }
 
@@ -186,7 +203,7 @@ void search (NODE *START)
     {
         count++;
         ptr = ptr -> NEXT;
-        if (ptr != NULL)
+        if (ptr == NULL)
         {
             flag = 0;
             break;
@@ -258,12 +275,12 @@ NODE *delete_at_any (NODE *START)
         while (i != num)
         {
             ++i;
-            preptr = temp -> PREV;
             temp = temp -> NEXT;
             if (temp == NULL)
             {
                 flag = 0; break;
             }
+            preptr = temp -> PREV;
             ptr = temp -> NEXT; 
         }
         if (flag == 1)
