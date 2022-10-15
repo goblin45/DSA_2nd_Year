@@ -272,7 +272,7 @@ NODE *delete_at_any (NODE *START)
     }
     else
     {
-        while (i != num)
+        while (i != num - 1)
         {
             ++i;
             temp = temp -> NEXT;
@@ -294,3 +294,63 @@ NODE *delete_at_any (NODE *START)
     }
     return START;
 }
+
+// Output:
+
+// **********MAIN MENU***********
+// 1. Create a list: 
+// 2. Display a list: 
+// 3. Insert at beginning: 
+// 4. Insert at end: 
+// 5. Insert at any: 
+// 6. Count number of nodes: 
+// 7. Search an element: 
+// 8. Delete at beginning: 
+// 9. Delete at end: 
+// 10. Delete at any: 
+// Enter -1 to exit.
+// Enter your option again: 1
+// Enter first data: 10
+// Enter next data: 11
+// Enter next data: 13
+// Enter next data: 14
+// Enter next data: 15
+// Enter next data: -1
+// Enter your option again: 2
+// The full list is: 
+// 10	11	13	14	15	
+// Enter your option again: 3
+// Enter the data: 9
+// Enter your option again: 2
+// The full list is: 
+// 9	10	11	13	14	15	
+// Enter your option again: 4
+// Enter the data: 16
+// Enter your option again: 2
+// The full list is: 
+// 9	10	11	13	14	15	16	
+// Enter your option again: 5
+// Enter the data: 12
+// Enter the position: 4
+// Enter your option again: 2
+// The full list is: 
+// 9	10	11	12	13	14	15	16	
+// Enter your option again: 6
+// The number of nodes is: 8
+// Enter your option again: 7
+// Enter the data: 14
+// The position of the data is: 6
+// Enter your option again: 8
+// Enter your option again: 2
+// The full list is: 
+// 10	11	12	13	14	15	16	
+// Enter your option again: 9
+// Enter your option again: 2
+// The full list is: 
+// 10	11	12	13	14	15	
+// Enter your option again: 10
+// Enter the position: 3
+// Enter your option again: 2
+// The full list is: 
+// 10	11	13	14	15	
+// Enter your option again: -1
