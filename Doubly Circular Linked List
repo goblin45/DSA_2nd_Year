@@ -20,23 +20,23 @@ NODE *delete_at_any (NODE *);
 
 int main ()
 {
-    int option;
+    int option = 0;
     printf ("\n**********MAIN MENU***********");
     printf ("\n1. Create a list: ");
     printf ("\n2. Display a list: ");
     printf ("\n3. Insert at beginning: ");
     printf ("\n4. Insert at end: ");
-    printf ("\n5. Count number of nodes: ");
-    printf ("\n6. Insert at any: ");
+    printf ("\n5. Insert at any: ");
+    printf ("\n6. Count number of nodes: ");
     printf ("\n7. Search an element: ");
     printf ("\n8. Delete at beginning: ");
     printf ("\n9. Delete at end: ");
     printf ("\n10. Delete at any: ");
     printf ("\nEnter -1 to exit.");
     printf ("\nEnter your option again: ");
-    scanf ("%d", &option);
     while (option != -1)
     {
+        scanf ("%d", &option);
         switch (option)
         {
             case 1:
@@ -74,7 +74,6 @@ int main ()
                 break;
         }
         printf ("\nEnter your option again: ");
-        scanf ("%d", &option);
     }
     return 0;
 }
@@ -82,23 +81,28 @@ int main ()
 void display (NODE *START)
 {
     NODE *ptr;
-    printf ("%d\t", START -> DATA);
-    ptr = START -> NEXT;
-    while (ptr != START)
+    if (START == NULL)
+        printf ("\nThe list is empty!");
+    else 
     {
-        printf ("%d\t", ptr -> DATA);
-        ptr = ptr -> NEXT;
+        printf ("\nThe full list is: \n%d", START -> DATA);
+        ptr = START -> NEXT;
+        while (ptr != START)
+        {
+            printf ("\t%d", ptr -> DATA);
+            ptr = ptr -> NEXT;
+        }
     }
 }
 
 NODE *create (NODE *START)
 {
-    NODE *new_node, *preptr;
-    new_node = (NODE *) malloc (sizeof (NODE));
+    NODE *new_node, *end;
     printf ("\nEnter first data: ");
-    scanf ("%d", &new_node -> DATA);
     while (1)
     {
+        new_node = (NODE *) malloc (sizeof (NODE));
+        scanf ("%d", &new_node -> DATA);
         if (new_node -> DATA == -1)
         {
             free (new_node);
@@ -108,24 +112,23 @@ NODE *create (NODE *START)
         {
             if (START == NULL)
             {
+                new_node -> NEXT = new_node;
+                new_node -> PREV = new_node;
                 START = new_node;
-                START -> NEXT = START;
-                START -> PREV = START;
             }
             else if (START -> NEXT == START)
             {
-                START -> NEXT = new_node; new_node -> NEXT = START;
-                START -> PREV = new_node; new_node -> PREV = START;
+                new_node -> PREV = START; new_node -> NEXT = START;
+                START -> PREV = new_node; START -> NEXT = new_node;
             }
             else
             {
-                preptr = START -> PREV;
-                new_node -> NEXT = START; preptr -> NEXT = new_node;
-                new_node -> PREV = preptr; START -> PREV = new_node;
+                end = START -> PREV;
+                new_node -> NEXT = START; new_node -> PREV = end; 
+                end -> NEXT = new_node; START -> PREV = new_node;
             }
         }
         printf ("\nEnter next data: ");
-        scanf ("%d", &new_node -> DATA);
     }
     return START;
 } 
@@ -159,14 +162,13 @@ NODE *insert_at_end (NODE *START)
 
 NODE *insert_at_any (NODE *START)
 {
-    NODE *new_node, *preptr, *ptr; int i = 0, num, flag = 1;
+    NODE *new_node, *preptr, *ptr; int i = 1, num, flag = 1;
     new_node = (NODE *) malloc (sizeof (NODE));
     printf ("\nEnter the data: ");
     scanf ("%d", &new_node -> DATA);
     printf ("\nEnter the position: ");
     scanf ("%d", &num);
-    preptr = START; 
-    if (num = 1)
+    if (num == 1)
     {
         new_node -> NEXT = START -> NEXT;
         new_node -> PREV = START -> PREV;
@@ -174,24 +176,23 @@ NODE *insert_at_any (NODE *START)
     }
     else
     {
-        while (i != num)
+        preptr = START;
+        while (i != num - 1)
         {
-            ptr = preptr -> NEXT;
-            i++;
+            ++i;
             preptr = preptr -> NEXT;
             if (preptr == START)
             {
+                printf ("\nList is not that long!");
                 flag = 0; break;
             }
         }
         if (flag == 1)
         {
-            ptr = ptr -> NEXT;
-            new_node -> NEXT = ptr; ptr -> PREV = new_node;
-            new_node -> PREV = preptr; preptr -> NEXT = new_node;
+            ptr = preptr -> NEXT;
+            new_node -> NEXT = ptr; new_node -> PREV = preptr;
+            ptr -> PREV = new_node; preptr -> NEXT = new_node;
         }
-        else 
-            printf ("\nList is not that long!");
     }
     return START;
 }
@@ -220,14 +221,20 @@ void search (NODE *START)
 
 void count_node (NODE *START)
 {
-    NODE *ptr; int count = 0;
+    NODE *ptr; int count;
     ptr = START;
-    while (ptr != NULL)
+    if (ptr == NULL)
+        printf ("\nNo nodes are present!");
+    else
     {
-        count++;
-        ptr = ptr -> NEXT;
+        count = 1;
+        while (ptr -> NEXT != START)
+        {
+            count++;
+            ptr = ptr -> NEXT;
+        }
+        printf ("\nThe number of nodes is: %d", count);
     }
-    printf ("\nThe number of nodes is: %d", count);
 }
 
 NODE *delete_at_beg (NODE *START)
@@ -298,3 +305,63 @@ NODE *delete_at_any (NODE *START)
     }
     return START;
 }
+
+// Output:
+
+// **********MAIN MENU***********
+// 1. Create a list: 
+// 2. Display a list: 
+// 3. Insert at beginning: 
+// 4. Insert at end: 
+// 5. Insert at any: 
+// 6. Count number of nodes: 
+// 7. Search an element: 
+// 8. Delete at beginning: 
+// 9. Delete at end: 
+// 10. Delete at any: 
+// Enter -1 to exit.
+// Enter your option again: 1
+// Enter first data: 10
+// Enter next data: 11
+// Enter next data: 13
+// Enter next data: 14
+// Enter next data: 15
+// Enter next data: -1
+// Enter your option again: 2
+// The full list is: 
+// 10	11	13	14	15	
+// Enter your option again: 3
+// Enter the data: 9
+// Enter your option again: 2
+// The full list is: 
+// 9	10	11	13	14	15	
+// Enter your option again: 4
+// Enter the data: 16
+// Enter your option again: 2
+// The full list is: 
+// 9	10	11	13	14	15	16	
+// Enter your option again: 5
+// Enter the data: 12
+// Enter the position: 4
+// Enter your option again: 2
+// The full list is: 
+// 9	10	11	12	13	14	15	16	
+// Enter your option again: 6
+// The number of nodes is: 8
+// Enter your option again: 7
+// Enter the data: 14
+// The position of the data is: 6
+// Enter your option again: 8
+// Enter your option again: 2
+// The full list is: 
+// 10	11	12	13	14	15	16	
+// Enter your option again: 9
+// Enter your option again: 2
+// The full list is: 
+// 10	11	12	13	14	15	
+// Enter your option again: 10
+// Enter the position: 3
+// Enter your option again: 2
+// The full list is: 
+// 10	11	13	14	15	
+// Enter your option again: -1
