@@ -1,0 +1,126 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+typedef struct node {
+    int data;
+    struct node *right, *left, *up;
+} Node;
+
+Node *root = NULL;
+void create ();
+void in_display ();
+void pre_display ();
+void post_display ();
+Node *choice (Node *);
+int current_height = 0;
+
+int main ()
+{
+    int option;
+    printf ("\n***********MAIN MENU**********");
+    printf ("\n1. Create a tree.");
+    printf ("\n2. Traverse via NLR.");
+    printf ("\n3. Traverse via LNR.");
+    printf ("\n4. Traverse via LRN.");
+    printf ("\nEnter -1 to exit.");
+    printf ("\nEnter your option.");
+    scanf ("%d", &option);
+    while (option != -1)
+    {
+        switch (option)
+        {
+            case 1:
+                create ();
+                break;
+            case 2:
+                in_display ();
+                break;
+            case 3: 
+                pre_display ();
+                break;
+            case 4:
+                post_display ();
+                break;
+            default:
+                printf ("\nWrong input! Please try again!");
+                break;
+        }
+        printf ("\nEnter you option again: ");
+        scanf ("%d", &option);
+    }
+    return 0;
+}
+
+Node *choice (Node *ptr)
+{
+    char ans;
+    printf ("\nGo to child? (Y/N): ");
+    scanf ("%c", &ans);
+    if (ans == 'Y')
+    {
+        printf ("\nWhich child? (L/R): ");
+        scanf ("%c", &ans);
+        if (ans == 'L')
+            ptr = ptr -> left;
+        else if (ans == 'R')
+            ptr = ptr -> right;
+        ++current_height;
+    }
+    else if (ans == 'N')
+    {
+        printf ("\nGo up to parent? (Y/N): ");
+        scanf ("%c", &ans);
+        if (ans == 'Y')
+        {
+            ptr = ptr -> up;
+            --current_height;
+        }
+    }
+    return ptr;
+}
+
+void create ()
+{
+    Node *new_node, *ptr;
+    printf ("\nEnter root data: ");
+    while (1)
+    {
+        new_node = (Node *) malloc (sizeof (Node));
+        new_node -> right = NULL;
+        new_node -> left = NULL;
+        new_node -> up = NULL;
+        scanf ("%d", &new_node -> data);
+        if (new_node -> data == -1)
+        {
+            free (new_node);
+            break;
+        }
+        else if (root == NULL)
+        {
+            root = new_node;
+        }
+        else 
+        {
+            ptr = root;
+            if (current_height > 0)
+                ptr = choice (ptr);
+            if (ptr -> left == NULL)
+            {
+                ptr -> left = new_node;
+                new_node -> up = ptr;
+            }
+            else if (ptr -> left != NULL && ptr -> right == NULL)
+            {
+                ptr -> right = new_node;
+                new_node -> up = ptr;
+            }
+            else 
+            {
+                printf ("\nNo more space. Please change the node.");
+                free (new_node);
+            }
+        }
+        printf ("\nEnter next data: ");
+    }
+}
