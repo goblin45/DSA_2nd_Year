@@ -34,6 +34,7 @@ int main ()
     printf ("\n10. Delete at any: ");
     printf ("\nEnter -1 to exit.");
     printf ("\nEnter your option again: ");
+    scanf ("%d", &option);
     while (option != -1)
     {
         scanf ("%d", &option);
@@ -74,6 +75,7 @@ int main ()
                 break;
         }
         printf ("\nEnter your option again: ");
+        scanf ("%d", &option);
     }
     return 0;
 }
