@@ -1,0 +1,46 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+typedef struct node {
+    int data;
+    struct node *prev, *next;
+} Node;
+
+Node *front = NULL, *rear = NULL, *start = NULL;
+void push_at_front ();
+void pop_from_front ();
+void push at_rear ();
+void pop_from_rear ();
+void display ();
+
+int main ()
+{
+
+}
+
+void push_at_front ()
+{
+    Node *new_node, *temp; 
+    new_node = (Node *) malloc (sizeof (Node));
+    printf ("\nEnter the data: ");
+    scanf ("%d", &new_node -> data);
+    new_node -> next = NULL;
+    new_node -> prev = NULL;
+    if (start == NULL)
+    {
+        front = rear = start = new_node;
+    }
+    else if (start -> next == NULL)
+    {
+        new_node -> prev = start;
+        start -> next = new_node;
+        rear = front = new_node;
+    }
+    else 
+    {
+        
+        
+        
+    }
+}
+
