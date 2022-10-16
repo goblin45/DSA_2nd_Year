@@ -9,13 +9,49 @@ typedef struct node {
 Node *front = NULL, *rear = NULL, *start = NULL;
 void push_at_front ();
 void pop_from_front ();
-void push at_rear ();
+void push_at_rear ();
 void pop_from_rear ();
 void display ();
 
 int main ()
 {
-
+    int option;
+    printf ("\n**********MAIN MENU**********");
+    printf ("\n1. Push at front.");
+    printf ("\n2. Pop from front.");
+    printf ("\n3. Push at rear.");
+    printf ("\n4. Pop from rear.");
+    printf ("\n5. Display the list.");
+    printf ("\nEnter -1 to exit.");
+    printf ("\nEnter your option: ");
+    scanf ("%d", &option);
+    while (option != -1)
+    {
+        switch (option)
+        {
+            case 1:
+                push_at_front ();
+                break;
+            case 2:
+                pop_from_front ();
+                break;
+            case 3:
+                push_at_rear ();
+                break;
+            case 4:
+                pop_from_rear ();
+                break;
+            case 5:
+                display ();
+                break;
+            default:
+                printf ("\nWrong input! Please try again!");
+                break;
+        }
+        printf ("\nEnter your option again: ");
+        scanf ("%d", &option);
+    }
+    return 0;
 }
 
 void push_at_front ()
