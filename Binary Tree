@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
 
 typedef struct node {
     int data;
@@ -13,7 +12,7 @@ void in_display ();
 void pre_display ();
 void post_display ();
 Node *choice (Node *);
-int current_height = 0;
+int current_height = -1;
 
 int main ()
 {
@@ -99,12 +98,11 @@ void create ()
         else if (root == NULL)
         {
             root = new_node;
+	    ptr = root;
         }
         else 
         {
-            ptr = root;
-            if (current_height > 0)
-                ptr = choice (ptr);
+            ptr = choice (ptr);
             if (ptr -> left == NULL)
             {
                 ptr -> left = new_node;
@@ -143,7 +141,7 @@ void pre_display (Node *ptr)
     pre_display (ptr -> right);
 }
 
-void pot_display (Node *ptr)
+void post_display (Node *ptr)
 {
     if (ptr == NULL)
 	return;
