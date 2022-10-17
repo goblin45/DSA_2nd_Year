@@ -124,3 +124,30 @@ void create ()
         printf ("\nEnter next data: ");
     }
 }
+
+void in_display (Node *ptr)
+{
+    if (ptr == NULL)
+	return;
+    printf ("%d\t", ptr.data);
+    in_display (ptr -> left);
+    in_display (ptr -> right);
+}
+
+void pre_display (Node *ptr)
+{
+    if (ptr == NULL)
+	return;
+    printf ("%d\t", ptr.data);
+    pre_display (ptr -> left);
+    pre_display (ptr -> right);
+}
+
+void pot_display (Node *ptr)
+{
+    if (ptr == NULL)
+	return;
+    printf ("%d\t", ptr.data);
+    post_display (ptr -> left);
+    post_display (ptr -> right);
+} 
