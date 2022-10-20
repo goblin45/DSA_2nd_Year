@@ -8,27 +8,25 @@ typedef struct node {
 
 Node *root = NULL;
 void create ();
-void insert_left (Node *);
-void insert_right (Node *);
+void insert (Node *, int);
 void in_display (Node *);
 void pre_display (Node *);
-void post_display (Node *);
-Node *choice (Node *);
-void count_node (Node *);
-void find_height (Node *);
-void net_leaf (Node *);
-void net_interal (Node *);
-void search (Node *);
-int current_height = -1;
+void post_display (Node *);\
+void traverse_count_height (Node *);
+void search (Node *, int);
+int level = 0, height = -1, max_height, net_nodes = 0, net_leaves = 0, net_internals = 0, flag = 0;
 
 int main ()
 {
-    int option;
+    int option, num;
     printf ("\n***********MAIN MENU**********");
     printf ("\n1. Create a tree.");
     printf ("\n2. Traverse via NLR.");
     printf ("\n3. Traverse via LNR.");
     printf ("\n4. Traverse via LRN.");
+    printf ("\n5. Count the number of nodes.");
+    printf ("\n6. Find the height of the tree.");
+    printf ("\n7. Search an element.");
     printf ("\nEnter -1 to exit.");
     printf ("\nEnter your option: ");
     scanf ("%d", &option);
@@ -40,13 +38,33 @@ int main ()
                 create ();
                 break;
             case 2:
-                in_display (root);
+                pre_display (root);
                 break;
             case 3: 
-                pre_display (root);
+                in_display (root);
                 break;
             case 4:
                 post_display (root);
+                break;
+            case 5:
+                if (root == NULL)
+                    printf ("\nThe tree has no node!");
+                else
+                {
+                    traverse_count_height (root);
+                    net_nodes = net_leaves + net_internals;
+                    printf ("\nCounting nodes...\nThe number of total nodes: \t%10d\nThe number of leaf nodes: \t%10d\nThe number of internal nodes: \t%10d", net_nodes, net_leaves, net_internals);
+                }
+                break;
+            case 6:
+                printf ("\nThe height of the tree is: %d", max_height);
+                break;
+            case 7: 
+                printf ("\nEnter the value to be searched: ");
+                scanf ("%d", &num);
+                search (root, num);
+                if (flag == 0)
+                    printf ("\nElement not found!");
                 break;
             default:
                 printf ("\nWrong input! Please try again!");
@@ -93,21 +111,33 @@ void create ()
             case 2: 
                 printf ("Left or Right? (1/2): ");
                 scanf ("%d", &ans);
+                ++level;
                 if (ans == 2 && ptr -> right != NULL)
                     ptr = ptr -> right;
                 else if (ans == 1 && ptr -> left != NULL)
                     ptr = ptr -> left;
                 else 
+                {
                     printf ("\nNode doesn't exist.");
+                    --level;
+                }
+                printf ("\nCurrent level: %d", level);
                 break;
             case 3:
-                ptr = ptr -> up;
+                if (ptr == root)
+                    printf ("\nNode doesn't exist.");
+                else 
+                {
+                    ptr = ptr -> up;
+                    --level;
+                }
+                printf ("\nCurrent level: %d", level);
                 break;
             default:
                 printf ("\nWrong input. Please try again!");
                 break;
         }
-        printf ("\nEnter your option again: ");
+        printf ("\n(Sub) Enter your option again: ");
         scanf ("%d", &option);
     }
 }
@@ -137,8 +167,8 @@ void in_display (Node *ptr)
 {
     if (ptr == NULL)
 	    return;
-    printf ("%d\t", ptr -> data);
     in_display (ptr -> left);
+    printf ("%d\t", ptr -> data);
     in_display (ptr -> right);
 }
 
@@ -146,7 +176,7 @@ void pre_display (Node *ptr)
 {
     if (ptr == NULL)
 	    return;
-    printf ("%d\t", ptr -> data);
+	printf ("%d\t", ptr -> data);
     pre_display (ptr -> left);
     pre_display (ptr -> right);
 }
@@ -155,7 +185,113 @@ void post_display (Node *ptr)
 {
     if (ptr == NULL)
 	    return;
-    printf ("%d\t", ptr -> data);
     post_display (ptr -> left);
     post_display (ptr -> right);
+    printf ("%d\t", ptr -> data);
 } 
+
+void traverse_count_height (Node *ptr)
+{
+    ++height;
+    if (ptr -> left == NULL && ptr -> right == NULL)
+    {    
+        ++net_leaves;
+        if (height > max_height)
+            max_height = height;
+        --height;
+        return;
+    }
+    else if (ptr -> left != NULL || ptr -> right != NULL)
+    {
+        ++net_internals;
+    }
+    traverse_count_height (ptr -> left);
+    traverse_count_height (ptr -> right);
+}
+
+void search (Node *ptr, int num)
+{
+    if (ptr == NULL)
+        return;
+    else if (ptr -> data == num)
+    {
+        printf ("The element is present!");
+        flag = 1; exit (1);
+    }
+    search (ptr -> left, num);
+    search (ptr -> right, num);
+}
+
+***********MAIN MENU**********
+1. Create a tree.
+2. Traverse via NLR.
+3. Traverse via LNR.
+4. Traverse via LRN.
+5. Count the number of nodes.
+6. Find the height of the tree.
+7. Search an element.
+Enter -1 to exit.
+Enter your option: 1
+Enter root data: 1
+*****SUB MENU*****
+1. Insert a child.
+2. Go to a child.
+3. Go to parent.
+Enter -1 to exit.
+Enter your option: 1
+Enter data: 2
+Left or Right? (1/2): 1
+(Sub) Enter your option again: 1
+Enter data: 3
+Left or Right? (1/2): 2
+(Sub) Enter your option again: 2
+Left or Right? (1/2): 1
+Current level: 1
+(Sub) Enter your option again: 1
+Enter data: 4
+Left or Right? (1/2): 1
+(Sub) Enter your option again: 1
+Enter data: 5
+Left or Right? (1/2): 2
+(Sub) Enter your option again: 3
+Current level: 0
+(Sub) Enter your option again: 1
+Enter data: 6
+Left or Right? (1/2): 1
+No more space. Please change the node.
+(Sub) Enter your option again: 1
+Enter data: 6
+Left or Right? (1/2): 2
+No more space. Please change the node.
+(Sub) Enter your option again: 2
+Left or Right? (1/2): 2
+Current level: 1
+(Sub) Enter your option again: 1
+Enter data: 6
+Left or Right? (1/2): 1
+(Sub) Enter your option again: 1
+Enter data: 7
+Left or Right? (1/2): 2
+(Sub) Enter your option again: 3
+Current level: 0
+(Sub) Enter your option again: 3
+Node doesn't exist.
+Current level: 0
+(Sub) Enter your option again: -1
+Exiting sub menu...
+Enter you option again: 2
+1	2	4	5	3	6	7	
+Enter you option again: 3
+4	2	5	1	6	3	7	
+Enter you option again: 4
+4	5	2	6	7	3	1	
+Enter you option again: 5
+Counting nodes...
+The number of total nodes: 	   7
+The number of leaf nodes: 	   4
+The number of internal nodes: 	   3
+Enter you option again: 6
+The height of the tree is: 3
+Enter you option again: 7
+Enter the value to be searched: 5
+The element is present!
