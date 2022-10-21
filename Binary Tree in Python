@@ -1,1 +1,189 @@
+class Node:
+    def __init__ (self, data):
+        self.data = data
+        self.left = None
+        self.right = None
+        self.up = None
 
+# height, net_nodes, net_leaves, net_internals, flag = -1, 0, 0, 0, 0 
+
+class Tree:
+    def __init__ (self):
+        self.height, self.net_nodes, self.net_leaves, self.net_internals, self.flag = -1, 0, 0, 0, 0 
+        self.root = None 
+        self.max_height = self.height 
+        return
+    def create (self):
+        level = 0
+        num = int (input ("Enter root data: "))
+        self.root = Node (num)
+        ptr = self.root
+        print ("*****SUB MENU*****")
+        print ("1. Enter a child.")  
+        print ("2. Go to a child.")
+        print ("3. Go to parent.")
+        print ("Enter -1 to exit.")
+        opt = int (input ("(Sub) Enter your option: "))
+        while (1):
+            if opt == 1:
+                self.insert (ptr)
+            elif opt == 2:
+                ans = input ("Left or Right? (L/R): ")
+                if ans == 'L' and ptr.left is not None:
+                    ptr = ptr.left
+                    level = level + 1
+                elif ans == 'R' and ptr.right is not None:
+                    ptr = ptr.right
+                    level = level + 1
+                else:   
+                    print ("Node doesn't exist!")
+                print ("Current level: ", level)
+            elif opt == 3: 
+                if ptr is self.root:
+                    print ("Node doesn't exist!")
+                else:
+                    ptr = ptr.up
+                    level = level - 1
+                    print ("Current level: ", level)
+            elif opt == -1:
+                print ("Exiting sub menu...")
+                return
+            else:
+                print ("Wrong input. Please try again!")
+            opt = int (input ("(Sub) Enter your option again: "))
+    def insert (self, ptr):
+        num = int (input ("Enter data: "))
+        new_node = Node (num)
+        new_node.up = ptr
+        ans = input ("Left or Right? (L/R): ")
+        if ans == 'L' and ptr.left is None:
+            ptr.left = new_node
+        elif ans == 'R' and ptr.right is None:
+            ptr.right = new_node
+        else:   
+            print ("No space left. Please change node!")
+    def pre_display (self, ptr):
+        if ptr is None:
+            return 
+        print (ptr.data, end = "\t")
+        self.pre_display (ptr.left)
+        self.pre_display (ptr.right)
+    def in_display (self, ptr):
+        if ptr is None:
+            return
+        self.in_display (ptr.left)
+        print (ptr.data, end = "\t")
+        self.in_display (ptr.right)
+    def post_display (self, ptr):
+        if ptr is None:
+            return 
+        self.post_display (ptr.left)
+        self.post_display (ptr.right)
+        print (ptr.data, end = "\t")
+    def traverse (self, ptr):
+        self.height = self.height + 1
+        if ptr.left is None and ptr.right is None:
+            self.net_leaves = self.net_leaves + 1
+            if (self.height > self.max_height):
+                self.max_height = self.height 
+            self.height = self.height - 1
+            return
+        elif ptr.left is not None or ptr.right is not None:
+            self.net_internals = self.net_internals + 1
+        self.traverse (ptr.left)
+        self.traverse (ptr.right)
+    def search (self, ptr, val):
+        if ptr.data is val:
+            print ("The element is found!")
+            self.flag = 1
+            return
+        if ptr.left is None and ptr.right is None:
+            return
+        self.search (ptr.left, val)
+        self.search (ptr.right, val)
+
+def main ():
+    print ("**********MAIN MENU**********")
+    print ("1. Create a Tree.")
+    print ("2. Display in Prefix order.")
+    print ("3. Display in Infix order.")
+    print ("4. Display in Postfix order.")
+    print ("5. Count the number of nodes.")
+    print ("6. Find the height of the tree.")
+    print ("7. Search an element.")
+    print ("Enter -1 to exit.")
+    tree1 = Tree ()
+    option = int (input ("Enter your option: "))
+    while (option != -1):
+        if option == 1:
+            tree1.create ()
+        elif option == 2:
+            tree1.pre_display (tree1.root)
+            print ()
+        elif option == 3:
+            tree1.in_display (tree1.root)
+            print ()
+        elif option == 4:
+            tree1.post_display (tree1.root)
+            print ()
+        elif option == 5:
+            tree1.traverse (tree1.root)
+            net_nodes = tree1.net_leaves + tree1.net_internals
+            print ("\nCounting nodes...\nThe number of total nodes: \t", net_nodes,  "\nThe number of leaf nodes: \t", tree1.net_leaves, "\nThe number of internal nodes: \t", tree1.net_internals)
+        elif option == 6:
+            print ("The height of the tree is: ", tree1.max_height)
+        elif option == 7:
+            val = int (input ("Enter the value to be searched: "))
+            tree1.search (tree1.root, val)
+            if tree1.flag == 0:
+                print ("Element not found!")
+        else:   
+            print ("Wrong input. Please try again!")
+        
+        option = int (input ("Enter your option again: "))
+
+main ()
+
+# Output:
+
+# **********MAIN MENU**********
+# 1. Create a Tree.
+# 2. Display in Prefix order.
+# 3. Display in Infix order.
+# 4. Display in Postfix order.
+# 5. Count the number of nodes.
+# 6. Find the height of the tree.
+# 7. Search an element.
+# Enter -1 to exit.
+# Enter your option: 1
+# Enter root data: 1
+# *****SUB MENU*****
+# 1. Enter a child.
+# 2. Go to a child.
+# 3. Go to parent.
+# Enter -1 to exit.
+# (Sub) Enter your option: 1
+# Enter data: 2
+# Left or Right? (L/R): L
+# (Sub) Enter your option again: 1
+# Enter data: 3
+# Left or Right? (L/R): R
+# (Sub) Enter your option again: -1
+# Exiting sub menu...
+# Enter your option again: 2
+# 1	2	3	
+# Enter your option again: 3
+# 2	1	3	
+# Enter your option again: 4
+# 2	3	1	
+# Enter your option again: 5
+# Counting nodes...
+# The number of total nodes: 	 3 
+# The number of leaf nodes: 	 2 
+# The number of internal nodes: 	1
+# Enter your option again: 6
+# The height of the tree is:  1
+# Enter your option again: 7
+# Enter the value to be searched: 3
+# The element is found!
+# Enter your option again: -1
