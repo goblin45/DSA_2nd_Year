@@ -42,12 +42,18 @@ void insert (int num)
 {
     Node *new_node, *ptr; int flag = 0;
     ptr = root;
-    while (flag != 1)
+    while (ptr! = NULL && flag != 1)
     {
         if (num > ptr -> data)
+        {    
+            ptr1 = ptr;
             ptr = ptr -> right;
+        }
         else if (num < ptr -> data)
+        {
+            ptr1 = ptr;
             ptr = ptr -> left;
+        }
         else
             printf ("\nNode already exists!");
     }
@@ -55,8 +61,10 @@ void insert (int num)
     new_node -> data = num;
     new_node -> left = NULL;
     new_node -> right = NULL;
-    
-    
+    if (ptr1 -> data < num)
+        ptr1 -> left = new_node;
+    else
+        ptr1 -> right = new_node;
 }
 
 void in_display (Node *ptr)
