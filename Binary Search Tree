@@ -1,0 +1,86 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+typedef struct node {
+    int data;
+    struct node *left, *right;
+} Node;
+
+void create ();
+void insert (int num);
+void in_display (Node *);
+void pre_display (Node *);
+void post_display (Node *);
+void traverse_count_height (Node *);
+void search (Node *);
+void check_complete_binary (Node *);
+void delete_any (Node *);
+void balance_factor (Node *);
+void min_value (Node *);
+void max_value (Node *);
+void null_count (Node *);
+Node *root = NULL;
+
+int main ()
+{
+    
+    
+}
+
+void create ()
+{
+    int num; Node *new_node;
+    new_node = (Node *) malloc (sizeof (Node));
+    printf ("\nEnter root data: ");
+    scanf ("%d", &new_node -> data);
+    new_node -> left = None;
+    new_node -> right = None;
+    root = new_node;
+}
+
+void insert (int num)
+{
+    Node *new_node, *ptr; int flag = 0;
+    ptr = root;
+    while (flag != 1)
+    {
+        if (num > ptr -> data)
+            ptr = ptr -> right;
+        else if (num < ptr -> data)
+            ptr = ptr -> left;
+        else
+            printf ("\nNode already exists!");
+    }
+    new_node = (Node *) malloc (sizeof (Node));
+    new_node -> data = num;
+    new_node -> left = NULL;
+    new_node -> right = NULL;
+    
+    
+}
+
+void in_display (Node *ptr)
+{
+    if (ptr == NULL)
+        return;
+    in_display (ptr -> left);
+    printf ("%d\t", ptr -> data);
+    in_display (ptr -> right);
+}
+
+void pre_display (Node *ptr)
+{
+    if (ptr == NULL)
+        return;
+    printf ("%d\t", ptr -> data);
+    pre_display (ptr -> left);
+    pre_display (ptr -> right);
+}
+
+void post_display (Node *ptr)
+{
+    if (ptr == NULL)
+        return;
+    post_display (ptr -> left);
+    post_display (ptr -> right);
+}
